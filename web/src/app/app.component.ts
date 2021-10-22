@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Measurement } from './state/domain';
-import { FetchMeasurements, MeasurementsState } from './state/measurements.state';
+import { FetchMeasurements } from './state/measurements.state';
 
 import { map } from 'rxjs/operators';
 import 'chartjs-adapter-date-fns';
