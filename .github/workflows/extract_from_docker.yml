@@ -22,25 +22,25 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v2
 
-      - name: Build and extract schlagwetter server
+      - name: Build schlagwetter server
         run: |
           cd server
           docker build -t schlagwetter-build -f docker/armv7/Dockerfile .
           docker create --name schlagwetter schlagwetter-build
-          docker cp schlagwetter:/server ./
-          docker cp schlagwetter:/ingester ./
-          docker rm docker cp schlagwetter:/server ./
+          docker cp schlagwetter:/server ./schlagwetter_server
+          docker cp schlagwetter:/ingester ./schlagwetter_ingester
+          docker rm schlagwetter
 
       - name: Upload schlagwetter server
         uses: actions/upload-artifact@v1
         with:
-          path: server
+          path: server/schlagwetter_server
           name: schlagwetter_server_armv7
 
       - name: Upload schlagwetter ingester
         uses: actions/upload-artifact@v1
         with:
-          path: ingester
+          path: server/schlagwetter_ingester
           name: schlagwetter_ingester_armv7
 
   release:
