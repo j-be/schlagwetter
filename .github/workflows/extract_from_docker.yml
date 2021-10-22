@@ -1,0 +1,90 @@
+name: Extract from Docker
+
+on:
+  push:
+
+jobs:
+  schlagwetter-server-armv7:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release zip
+
+      - name: Install Docker
+        run: |
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          sudo apt-get update
+          sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Build and extract schlagwetter server
+        run: |
+          cd server
+          docker build -t schlagwetter-build -f docker/armv7/Dockerfile .
+          docker create --name schlagwetter schlagwetter-build
+          docker cp schlagwetter:/server ./
+          docker cp schlagwetter:/ingester ./
+          docker rm docker cp schlagwetter:/server ./
+
+      - name: Upload schlagwetter server
+        uses: actions/upload-artifact@v1
+        with:
+          path: server
+          name: schlagwetter_server_armv7
+
+      - name: Upload schlagwetter ingester
+        uses: actions/upload-artifact@v1
+        with:
+          path: ingester
+          name: schlagwetter_ingester_armv7
+
+  release:
+    runs-on: ubuntu-20.04
+    if: ${{ startsWith(github.ref, 'refs/tags') }}
+
+    steps:
+    - name: Download schlagwetter_server_armv7 binary
+      uses: actions/download-artifact@v1
+      with:
+        name: schlagwetter_server_armv7
+
+    - name: Download schlagwetter_ingester_armv7 binary
+      uses: actions/download-artifact@v1
+      with:
+        name: schlagwetter_ingester_armv7
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Attach server armv7 binary to release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: schlagwetter_server_armv7/server
+        asset_name: schlagwetter_server_armv7
+        asset_content_type: application/octet-stream
+
+    - name: Attach ingester armv7 binary to release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: schlagwetter_ingester_armv7/ingester
+        asset_name: schlagwetter_ingester_armv7
+        asset_content_type: application/octet-stream
