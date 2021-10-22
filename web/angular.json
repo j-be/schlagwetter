@@ -55,6 +55,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "baseHref": "/schlagwetter/",
               "outputHashing": "all"
             },
             "development": {
