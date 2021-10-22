@@ -14,7 +14,7 @@ fn main() {
 
     println!("Start");
     rocket::ignite()
-        .mount("/api", routes![
+        .mount("/schlagwetter/api", routes![
             api_handler::get_nodes,
          ])
         .attach(api_handler::SchlagwetterDbConn::fairing())
