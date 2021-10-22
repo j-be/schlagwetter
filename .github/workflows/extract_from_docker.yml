@@ -82,7 +82,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: schlagwetter_server_armv7/schlagwetter_server
-        asset_name: schlagwetter_server_armv7
+        asset_name: schlagwetter_server_armhf
         asset_content_type: application/octet-stream
 
     - name: Attach ingester armv7 binary to release
@@ -92,5 +92,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: schlagwetter_ingester_armv7/schlagwetter_ingester
-        asset_name: schlagwetter_ingester_armv7
+        asset_name: schlagwetter_ingester_armhf
         asset_content_type: application/octet-stream
