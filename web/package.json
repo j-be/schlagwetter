@@ -18,6 +18,12 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
+    "@ngxs/store": "^3.7.2",
+    "chart.js": "^3.5.1",
+    "chartjs-adapter-date-fns": "^2.0.0",
+    "date-fns": "^2.25.0",
+    "primeflex": "^3.1.0",
+    "primeng": "^12.2.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
