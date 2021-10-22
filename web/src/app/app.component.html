@@ -7,12 +7,14 @@
     {{ humidity$ | async }}<span class="unit">%</span>
   </div>
 
-  <div class="card flex flex-column flex-1 flex-grow-1">
-    <div class="flex-grow-1"></div>
-    <p-chart type="line"
-            [data]="chartData$ | async"
-            [options]="basicOptions">
-    </p-chart>
-    <div class="flex-grow-1"></div>
+  <div class="flex flex-column flex-1">
+    <div class="flex-1"></div>
+      <div class="card">
+        <p-chart type="line"
+                [data]="chartData$ | async"
+                [options]="basicOptions">
+        </p-chart>
+      </div>
+    <div class="flex-1"></div>
   </div>
 </div>
