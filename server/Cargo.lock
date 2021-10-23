@@ -1110,7 +1110,7 @@ dependencies = [
 
 [[package]]
 name = "schlagwetter-server"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "aes 0.7.5",
  "chrono",
