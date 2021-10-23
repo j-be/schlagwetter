@@ -33,7 +33,8 @@
             "styles": [
               "src/styles.sass"
             ],
-            "scripts": []
+            "scripts": [],
+            "baseHref": "/schlagwetter/"
           },
           "configurations": {
             "production": {
@@ -55,7 +56,6 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "baseHref": "/schlagwetter/",
               "outputHashing": "all"
             },
             "development": {
