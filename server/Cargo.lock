@@ -1118,6 +1118,7 @@ dependencies = [
  "diesel-derive-enum",
  "diesel_migrations",
  "dotenv",
+ "regex",
  "rocket",
  "rocket_contrib",
  "serde",
