@@ -13,8 +13,7 @@ jobs:
 
     steps:
       - name: Install dependencies
-        run: |
-          sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release zip
+        run: sudo apt-get install apt-transport-https ca-certificates curl gnupg lsb-release
 
       - name: Install Docker
         run: |
