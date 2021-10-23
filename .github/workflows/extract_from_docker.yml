@@ -53,6 +53,9 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v1
 
+      - name: Install dependencies
+        run: sudo apt-get install zip
+
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
@@ -64,10 +67,15 @@ jobs:
           npm install
           npm run build --prod
 
-      - name: Upload web-vault
+      - name: ZIP the package
+        run: |
+          cd web/dist
+          zip -r schlagwetter-web schlagwetter-web
+
+      - name: Upload schlagwetter-web.zip
         uses: actions/upload-artifact@v1
         with:
-          path: web/dist/schlagwetter-web
+          path: web/dist/schlagwetter-web.zip
           name: schlagwetter-web.zip
 
   release:
@@ -86,6 +94,12 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: schlagwetter_ingester_armv7
+
+    - name: Download schlagwetter_ingester_armv7 binary
+      uses: actions/download-artifact@v1
+      with:
+        name: schlagwetter-web.zip
+        path: ./
 
     - name: Create Release
       id: create_release
@@ -117,3 +131,13 @@ jobs:
         asset_path: schlagwetter_ingester_armv7/schlagwetter_ingester
         asset_name: schlagwetter_ingester_armhf
         asset_content_type: application/octet-stream
+
+    - name: Attach web ui to release
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: schlagwetter-web.zip
+        asset_name: schlagwetter-web.zip
+        asset_content_type: application/zip
