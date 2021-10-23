@@ -32,7 +32,7 @@ export class MeasurementsState {
 
   @Action(FetchMeasurements)
   fetchMeasurements(ctx: StateContext<MeasurementsModel>) {
-    this.httpClient.get<Measurement[]>("/api/recent")
+    this.httpClient.get<Measurement[]>("/schlagwetter/api/recent")
         .subscribe(measurements => ctx.dispatch(new MeasurementsReceived(measurements)));
   }
 
