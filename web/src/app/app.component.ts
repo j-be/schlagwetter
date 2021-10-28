@@ -64,6 +64,9 @@ export class AppComponent implements OnInit {
           type: 'time',
           time: {
             minUnit: 'hour',
+            displayFormats: {
+              hour: 'HH:00',
+            },
           },
           ticks: {
             color: '#ebedef',
