@@ -62,6 +62,9 @@ export class AppComponent implements OnInit {
       scales: {
         x: {
           type: 'time',
+          time: {
+            minUnit: 'hour',
+          },
           ticks: {
             color: '#ebedef'
           },
@@ -74,10 +77,13 @@ export class AppComponent implements OnInit {
           suggestedMin: 0,
           suggestedMax: 40,
           ticks: {
-            color: '#ebedef'
+            stepSize: 10,
+            color: '#FFA726',
           },
           grid: {
-            color: 'rgba(255,255,255,0.2)'
+            color: 'rgba(255,255,255,0.2)',
+            tickColor: '#FFA726',
+            borderColor: '#FFA726',
           },
         },
         hum: {
@@ -85,10 +91,13 @@ export class AppComponent implements OnInit {
           suggestedMin: 0,
           suggestedMax: 100,
           ticks: {
-            color: '#ebedef'
+            stepSize: 25,
+            color: '#42A5F5',
           },
           grid: {
-            color: 'rgba(255,255,255,0.2)'
+            color: 'rgba(255,255,255,0.2)',
+            tickColor: '#42A5F5',
+            borderColor: '#42A5F5',
           },
         }
       },
