@@ -1,6 +1,6 @@
 {
   "/schlagwetter/api/*": {
-    "target": "http://localhost:8001",
+    "target": "https://owly.duckdns.org/",
     "secure": false,
     "logLevel": "debug"
   }
