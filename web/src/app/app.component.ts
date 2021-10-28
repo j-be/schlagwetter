@@ -40,7 +40,7 @@ export class AppComponent implements OnInit {
     );
     this.chartData$ = this.measurements$?.pipe(
       map(measurements => ({
-        labels: measurements.map(measurement => measurement.recorded_at),
+        labels: measurements.map(measurement => new Date(measurement.recorded_at + "Z")),
         datasets: [
           {
             label: 'Temperature',
