@@ -1,20 +1,33 @@
-<div class="flex flex-1 flex-column">
-  <div class="card">
-    {{ temperature$ | async }}<span class="unit">°C</span>
-  </div>
-
-  <div class="card">
-    {{ humidity$ | async }}<span class="unit">%</span>
-  </div>
-
-  <div class="flex flex-column flex-1">
-    <div class="flex-1"></div>
+<div class="container">
+  <div class="row">
+    <div class="col s12 m6">
       <div class="card">
+        <div class="card-content">
+          {{ temperature$ | async }}<span class="unit">°C</span>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6">
+      <div class="card">
+        <div class="card-content">
+          {{ humidity$ | async }}<span class="unit">%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col s12">
+      <div class="card">
+        <div class="card-content"></div>
         <p-chart type="line"
                 [data]="chartData$ | async"
                 [options]="basicOptions">
         </p-chart>
-      </div>
-    <div class="flex-1"></div>
+    </div>
   </div>
 </div>
+</div>
+
+<a class="btn btn-floating btn-large"
+   (click)="refresh()" >
+  <i class="material-icons">autorenew</i>
+</a>

@@ -1,25 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
 html
-  height: 100%
-  color: rgba(255, 255, 255, 0.87)
   background-color: #121212
-
-body
-  height: 100%
-  margin: 0
 
 .unit
   color: rgba(255, 255, 255, 0.6)
 
 app-root
-  display: flex
-  height: 100%
+  margin: 0
 
-.flex
-  display: flex
+/*
+ * Customize materialize.scss
+ */
 
-.flex-column
-  flex-direction: column
+$secondary-color: #59981a
+$off-black: rgba(255, 255, 255, 0.87)
+$card-bg-color: #1e1e1e
 
-.flex-1
-  flex-grow: 1
+@import node_modules/materialize-css/sass/materialize.scss
+
+.container
+  width: 100%
+
+.card
+  margin: 20px
