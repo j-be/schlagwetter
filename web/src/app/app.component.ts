@@ -66,10 +66,10 @@ export class AppComponent implements OnInit {
             minUnit: 'hour',
           },
           ticks: {
-            color: '#ebedef'
+            color: '#ebedef',
           },
           grid: {
-            color: 'rgba(255,255,255,0.2)'
+            color: 'rgba(255,255,255,0.2)',
           },
         },
         temp: {
@@ -99,14 +99,14 @@ export class AppComponent implements OnInit {
             tickColor: '#42A5F5',
             borderColor: '#42A5F5',
           },
-        }
+        },
       },
       plugins: {
         legend: {
             labels: {
-                color: '#ebedef'
-            }
-        }
+                color: '#ebedef',
+            },
+        },
       },
       radius: 0,
     };
