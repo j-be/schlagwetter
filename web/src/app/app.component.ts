@@ -28,9 +28,13 @@ export class AppComponent implements OnInit {
     private store: Store,
   ) {
   }
-​
-  ngOnInit() {
+
+  refresh() {
     this.store.dispatch(new FetchMeasurements());
+  }​
+
+  ngOnInit() {
+    this.refresh();
 
     this.temperature$ = this.measurements$?.pipe(
       map(measurements => measurements?.length ? measurements[0].temperature : -273.15)
