@@ -10,6 +10,8 @@ SimpleDHT22 dht22(pinDHT22);
 
 void setup() {
   Serial.begin(9600);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop() {
@@ -29,9 +31,11 @@ void loop() {
   }
 
   Serial.print("T");
-  Serial.print((float)temperature);
+  Serial.print(temperature);
   Serial.print(" H");
-  Serial.println((float)humidity);
+  Serial.println(humidity);
+
+  digitalWrite(LED_BUILTIN, humidity > 60);
 
   // DHT22 sampling rate is 0.5HZ.
   for (int i = 0; i < 10; i++)
