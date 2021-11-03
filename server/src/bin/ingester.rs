@@ -28,19 +28,21 @@ pub fn main() {
 
     let mut reader = BufReader::new(port.as_mut());
 
-    let mut buffer: Vec<u8> = Vec::new();
     loop{
-        reader.read_until(10, buffer.as_mut())
-            .expect("Error while reading from Serial Console!");
-        let line = std::str::from_utf8(&buffer)
-            .expect("Error while reading data from buffer!");
-        println!("Got Line {}", line);
-        if re.is_match(line) {
-            let caps = re.captures(line).unwrap();
-            insert(&connection,
-                caps["temperature"].parse::<f64>().expect(""),
-                caps["humidity"].parse::<f64>().expect(""),
-            );
+        let mut buffer: Vec<u8> = Vec::new();
+        match reader.read_until(10, buffer.as_mut()) {
+            Ok(_) => {
+                let line = std::str::from_utf8(&buffer).expect("");
+                println!("Got Line {}", line);
+                if re.is_match(line) {
+                    let caps = re.captures(line).unwrap();
+                    insert(&connection,
+                        caps["temperature"].parse::<f64>().expect(""),
+                        caps["humidity"].parse::<f64>().expect(""),
+                    );
+                }
+            },
+            _ => print!("Error while trying to read from serial console!"),
         }
     }
 }
