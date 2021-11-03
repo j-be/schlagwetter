@@ -42,7 +42,10 @@ pub fn main() {
                     );
                 }
             },
-            _ => print!("Error while trying to read from serial console!"),
+            _ => {
+                print!("Error while trying to read from serial console!");
+                return;
+            },
         }
     }
 }
