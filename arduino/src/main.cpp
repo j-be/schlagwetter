@@ -38,6 +38,6 @@ void loop() {
   digitalWrite(LED_BUILTIN, humidity > 60);
 
   // DHT22 sampling rate is 0.5HZ.
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 2; i++)
     delay(30 /*sec*/ * 1000 /* mills */);
 }
