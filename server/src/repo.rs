@@ -21,7 +21,7 @@ pub fn migrate() {
 pub fn get_recent(conn: &PgConnection) -> Vec<Measurement> {
     return measurements::dsl::measurements
         .order(measurements::recorded_at.desc())
-        .limit(100)
+        .limit(500)
         .load::<Measurement>(conn)
         .expect("Error loading recent measurements");
 }
