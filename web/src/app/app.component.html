@@ -17,11 +17,23 @@
 
     <div class="col s12">
       <div class="card">
-        <div class="card-content"></div>
-        <p-chart type="line"
-                [data]="chartData$ | async"
-                [options]="basicOptions">
+        <div class="card-content">
+          <p-chart type="line"
+          [data]="chartData$ | async"
+          [options]="basicOptions">
         </p-chart>
+        <div class="latest-measurement valign-wrapper">
+          <div class="col s6 m9">
+            {{ latestMeasurement$ | async }}
+          </div>
+          <div class="col s6 m3 right-align">
+            <p-dropdown [options]="timeSpans"
+                        [ngModel]="fetchMinutes$ | async" (onChange)="selectedTimeSpanChanged($event)"
+                        optionLabel="label" optionValue="minutes">
+            </p-dropdown>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

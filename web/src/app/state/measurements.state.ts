@@ -12,14 +12,21 @@ export class MeasurementsReceived {
   constructor(public measurements: Measurement[]) {}
 }​
 
+export class SetFetchMinutes {
+  static readonly type = '[Measurements] Set fetch minutes';
+  constructor(public fetchMinutes: number) {}
+}
+
 export interface MeasurementsModel {
   measurements: Measurement[];
+  fetchMinutes: number;
 }
 ​
 @State<MeasurementsModel>({
   name: 'measurements',
   defaults: {
     measurements: [],
+    fetchMinutes: 3 * 60,
   }
 })
 @Injectable()
@@ -32,7 +39,7 @@ export class MeasurementsState {
 
   @Action(FetchMeasurements)
   fetchMeasurements(ctx: StateContext<MeasurementsModel>) {
-    this.httpClient.get<Measurement[]>("/schlagwetter/api/recent")
+    this.httpClient.get<Measurement[]>(`/schlagwetter/api/recent/${ctx.getState().fetchMinutes}`)
         .subscribe(measurements => ctx.dispatch(new MeasurementsReceived(measurements)));
   }
 
@@ -43,5 +50,15 @@ export class MeasurementsState {
       ...state,
       measurements: action.measurements,
     });
+  }
+
+  @Action(SetFetchMinutes)
+  setFetchMinutes(ctx: StateContext<MeasurementsModel>, action: SetFetchMinutes) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      fetchMinutes: action.fetchMinutes,
+    });
+    ctx.dispatch(new FetchMeasurements());
   }
 }

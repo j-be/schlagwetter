@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { Measurement } from './state/domain';
-import { FetchMeasurements } from './state/measurements.state';
+import { FetchMeasurements, SetFetchMinutes } from './state/measurements.state';
 
 import { map } from 'rxjs/operators';
 import 'chartjs-adapter-date-fns';
@@ -16,35 +16,56 @@ export class AppComponent implements OnInit {
   title = 'schlagwetter-web';
 
   @Select((state: any) => state.measurements.measurements)
-  public measurements$?: Observable<Measurement[]>;
+  public measurements$!: Observable<Measurement[]>;
 
-  public humidity$: Observable<number> | undefined;
-  public temperature$: Observable<number> | undefined;
-  public chartData$: Observable<any> | undefined;
+  @Select((state: any) => state.measurements.fetchMinutes)
+  public fetchMinutes$!: Observable<number>;
+
+  public humidity$!: Observable<number>;
+  public temperature$!: Observable<number>;
+  public latestMeasurement$!: Observable<string>;
+  public chartData$!: Observable<any>;
 
   public basicOptions: any;
+
+  public timeSpans: {label: string, minutes: number}[];
+  public selectedTimeSpan: number;
 
   constructor(
     private store: Store,
   ) {
+    this.selectedTimeSpan = 3 * 60;
+
+    this.timeSpans = [
+        {label: '3 hours', minutes: 3 * 60},
+        {label: '12 hours', minutes: 12 * 60},
+        {label: '24 hours', minutes: 24 * 60},
+    ];
   }
 
   refresh() {
     this.store.dispatch(new FetchMeasurements());
   }​
 
+  selectedTimeSpanChanged($event: any): void {
+    this.store.dispatch(new SetFetchMinutes($event?.value || 3 * 60));
+  }
+
   ngOnInit() {
     this.refresh();
 
-    this.temperature$ = this.measurements$?.pipe(
+    this.temperature$ = this.measurements$.pipe(
       map(measurements => measurements?.length ? measurements[0].temperature : -273.15)
     );
-    this.humidity$ = this.measurements$?.pipe(
+    this.humidity$ = this.measurements$.pipe(
       map(measurements => measurements?.length ? measurements[0].humidity : -1)
     );
-    this.chartData$ = this.measurements$?.pipe(
+    this.latestMeasurement$ = this.measurements$.pipe(
+      map(measurements => measurements?.length ? new Date(measurements[0].recorded_at + 'Z').toLocaleTimeString('DE') : '')
+    );
+    this.chartData$ = this.measurements$.pipe(
       map(measurements => ({
-        labels: measurements.map(measurement => new Date(measurement.recorded_at + "Z")),
+        labels: measurements.map(measurement => new Date(measurement.recorded_at + 'Z')),
         datasets: [
           {
             label: 'Temperature',
