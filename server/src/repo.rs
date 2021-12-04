@@ -1,5 +1,6 @@
 use std::env;
 
+use chrono::{Duration, Utc};
 use diesel::PgConnection;
 use diesel::prelude::*;
 
@@ -18,10 +19,12 @@ pub fn migrate() {
         .expect("Migration failed!");
 }
 
-pub fn get_recent(conn: &PgConnection) -> Vec<Measurement> {
+pub fn get_recent(conn: &PgConnection, minutes: i64) -> Vec<Measurement> {
+    let start_date = Utc::now() - Duration::minutes(minutes);
+
     return measurements::dsl::measurements
+        .filter(measurements::dsl::recorded_at.gt(start_date.naive_utc()))
         .order(measurements::recorded_at.desc())
-        .limit(500)
         .load::<Measurement>(conn)
         .expect("Error loading recent measurements");
 }
