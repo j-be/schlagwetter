@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 import { ChartModule } from 'primeng/chart'
 import { DropdownModule } from 'primeng/dropdown';
@@ -25,6 +26,9 @@ import { MeasurementsState } from './state/measurements.state';
     // NGXS
     NgxsModule.forRoot([MeasurementsState], {
       developmentMode: !environment.production
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot({
+      disabled: environment.production,
     }),
     // PrimeNG
     ChartModule,
