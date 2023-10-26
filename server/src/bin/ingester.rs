@@ -16,9 +16,11 @@ pub fn main() {
         .expect("DATABASE_URL must be set");
     let connection = PgConnection::establish(&database_url)
         .expect(&format!("Error connecting to {}", database_url));
+    let serial = env::var("SERIAL")
+        .unwrap_or(String::from("/dev/ttyUSB0"));
 
     let re = Regex::new(r"^T(?P<temperature>\d+\.\d+) H(?P<humidity>\d+\.\d+)\r\n").unwrap();
-    let mut port = serialport::new("/dev/ttyUSB0", 9_600)
+    let mut port = serialport::new(serial, 9_600)
         .timeout(Duration::from_millis(7 * 60 * 1000))
         .open()
         .expect("Failed to open port");
