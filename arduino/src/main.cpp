@@ -5,13 +5,14 @@
 //      GND: GND
 //      DATA: 2
 
-int pinDHT22 = 2;
+int pinDHT22 = 17;
+int pinLED = 25;
 SimpleDHT22 dht22(pinDHT22);
 
 void setup() {
   Serial.begin(9600);
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
+  pinMode(pinLED, OUTPUT);
+  digitalWrite(pinLED, HIGH);
 }
 
 void loop() {
