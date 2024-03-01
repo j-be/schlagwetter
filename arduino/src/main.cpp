@@ -12,6 +12,12 @@ SimpleDHT22 dht22(PIN_DHT22);
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(128, 32, new MbedI2C(14, 15), OLED_RESET);
 
+// State
+float _temperature = 0;
+float _humidity = 0;
+boolean _updated = true;
+int _loopcount = 30;
+
 void drawGradeSymbol() {
   uint16_t gap = 4;
   uint16_t radius = 3;
@@ -85,15 +91,24 @@ void loop() {
     return;
   }
 
-  Serial.print("T");
-  Serial.print(temperature);
-  Serial.print(" H");
-  Serial.println(humidity);
+  // Update state
+  _temperature = temperature;
+  _humidity = humidity;
+  _updated = true;
 
+  // Update UI
   digitalWrite(PIN_LED, humidity > 60);
   printTempAndHumidity(temperature, humidity);
 
-  // DHT22 sampling rate is 0.5HZ.
-  for (int i = 0; i < 2; i++)
-    delay(30 /*sec*/ * 1000 /* mills */);
+  // Report on serial
+  if (_loopcount >= 29 && _updated) {
+    Serial.print("T");
+    Serial.print(temperature);
+    Serial.print(" H");
+    Serial.println(humidity);
+    _updated = false;
+    _loopcount = 0;
+  }
+
+  _loopcount++;
 }
