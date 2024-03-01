@@ -2,11 +2,10 @@
 #include <Adafruit_SSD1306.h>
 #include <SimpleDHT.h>
 
-int pinLED = 25;
+#define PIN_DHT22 17
 
 // DHT22
-int pinDHT22 = 17;
-SimpleDHT22 dht22(pinDHT22);
+SimpleDHT22 dht22(PIN_DHT22);
 
 // OLED
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
@@ -47,16 +46,16 @@ void printTempAndHumidity(float temperature, float humidity) {
 
 void setup() {
   Serial.begin(9600);
-  pinMode(pinLED, OUTPUT);
-  digitalWrite(pinLED, HIGH);
+  pinMode(PIN_LED, OUTPUT);
+  digitalWrite(PIN_LED, HIGH);
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;) {
-      digitalWrite(pinLED, LOW);
+      digitalWrite(PIN_LED, LOW);
       delay(500);
-      digitalWrite(pinLED, HIGH);
+      digitalWrite(PIN_LED, HIGH);
       delay(500);
     } // Don't proceed, loop forever
   }
@@ -91,7 +90,7 @@ void loop() {
   Serial.print(" H");
   Serial.println(humidity);
 
-  digitalWrite(LED_BUILTIN, humidity > 60);
+  digitalWrite(PIN_LED, humidity > 60);
   printTempAndHumidity(temperature, humidity);
 
   // DHT22 sampling rate is 0.5HZ.
