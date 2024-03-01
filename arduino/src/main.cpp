@@ -32,11 +32,11 @@ void printTempAndHumidity(float temperature, float humidity) {
   display.setCursor(0, 0);
 
   display.print(F("H: "));
-  display.print(humidity);
+  display.print(humidity, 1);
   display.println(F("%"));
 
   display.print(F("T: "));
-  display.print(temperature);
+  display.print(temperature, 1);
   drawGradeSymbol();
   display.println(F("C"));
 
